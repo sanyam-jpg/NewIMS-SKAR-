@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Item;
 import com.example.demo.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class InventoryController {
 
 
     @PostMapping("/create")
-    public String createInventory(@RequestBody Item item){
+    public ResponseEntity<String> createInventory(@RequestBody Item item){
 //        System.out.println(item.getLocation());
         return inventoryService.createInventory(item);
     }
