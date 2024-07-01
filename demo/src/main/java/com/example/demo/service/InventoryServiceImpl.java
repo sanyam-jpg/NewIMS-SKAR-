@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class InventoryServiceImpl implements InventoryService {
 
@@ -27,9 +29,8 @@ public class InventoryServiceImpl implements InventoryService {
             return new ResponseEntity<>("Invalid Location",HttpStatus.BAD_REQUEST);
         }
 
-
-
-
+        item.setCreationDate(setTodayDateTime());
+        item.setLastUpdatedDate(setTodayDateTime());
 
         repository.save(item);
 
@@ -43,7 +44,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
 
-    // helper functions to
+    // helper functions
 
 
     boolean validType(String type){
@@ -57,6 +58,12 @@ public class InventoryServiceImpl implements InventoryService {
 
         return false;
     }
+
+
+    String setTodayDateTime(){
+        return LocalDateTime.now().toString();
+    }
+
 
 
 }

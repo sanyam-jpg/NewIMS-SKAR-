@@ -34,7 +34,9 @@ public class Item {
     @Column
     private String lastUpdatedDate;
 
-    @Column String attribute;
+    @Column private String attribute;
+
+
 
     public void setAttribute(JsonNode attribute) {
 
