@@ -16,10 +16,20 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseEntity<String> createInventory(Item item){
+
+
         if(!validType(item.getType())){
-            String responce = item.getType() + " is not a valid type of item";
-            return new ResponseEntity<>(responce,HttpStatus.FORBIDDEN);
+            String response = item.getType() + " is not a valid type of item";
+            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
         }
+
+        if(!item.getLocation().matches("[a-zA-Z]+")){
+            return new ResponseEntity<>("Invalid Location",HttpStatus.BAD_REQUEST);
+        }
+
+
+
+
 
         repository.save(item);
 
@@ -33,7 +43,8 @@ public class InventoryServiceImpl implements InventoryService {
 
 
 
-    // helper functions to validate
+    // helper functions to
+
 
     boolean validType(String type){
         if(type==null || type.isEmpty()){
@@ -46,4 +57,6 @@ public class InventoryServiceImpl implements InventoryService {
 
         return false;
     }
+
+
 }
