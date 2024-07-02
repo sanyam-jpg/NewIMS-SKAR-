@@ -5,9 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface CreateInventoryService {
+public interface InventoryService {
 
     ResponseEntity<String> createInventory(Item item);
+    public String getAllInventory();
+    public String getInventory(Long id);
+
 
 
 }

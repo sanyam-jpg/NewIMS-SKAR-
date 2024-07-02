@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class CreateCreateInventoryServiceImpl implements CreateInventoryService {
+public class InventoryServiceImpl implements InventoryService {
 
     @Autowired
     private InventoryRepository repository;
 
+
+    //// CREATE///////
     @Override
     public ResponseEntity<String> createInventory(Item item){
 
@@ -41,10 +43,22 @@ public class CreateCreateInventoryServiceImpl implements CreateInventoryService 
     //TODO : validate attribute can hold only json
 
 
+    //GET//
+
+    @Override
+    public String getAllInventory(){
+        return repository.findAll().toString();
+    }
+
+    @Override
+    public String getInventory(Long id){
+        return "";
+    }
 
 
 
-    // helper functions
+
+    // HELPER FUNCTION///
 
     boolean validType(String type){
         if(type==null || type.isEmpty()){
