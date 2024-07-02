@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import configration.ItemStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -54,6 +55,10 @@ public class Item {
         catch (Exception e){
             throw new RuntimeException("unable to deserialize JSON");
         }
+    }
+
+    public void setStatus(){
+        this.status = ItemStatus.CREATED.toString();
     }
 
 }

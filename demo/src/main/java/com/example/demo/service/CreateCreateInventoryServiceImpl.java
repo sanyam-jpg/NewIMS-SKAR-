@@ -31,6 +31,7 @@ public class CreateCreateInventoryServiceImpl implements CreateInventoryService 
 
         item.setCreationDate(setTodayDateTime());
         item.setLastUpdatedDate(setTodayDateTime());
+        item.setStatus();
 
         repository.save(item);
 
