@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -55,6 +56,40 @@ public class InventoryServiceImpl implements InventoryService {
         return "";
     }
 
+
+   //UPDATE//
+    @Override
+    public ResponseEntity<String> updateInventory(Long id, Item item) {
+        Optional<Item> existingItemOptional = repository.findById(id);
+
+        if (existingItemOptional.isPresent()) {
+            Item existingItem = existingItemOptional.get();
+
+            if (!validType(item.getType())) {
+                String response = item.getType() + " is not a valid type of item";
+                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+            }
+
+            if (!item.getLocation().matches("[a-zA-Z]+")) {
+                return new ResponseEntity<>("Invalid Location", HttpStatus.BAD_REQUEST);
+            }
+
+
+            existingItem.setType(item.getType());
+            existingItem.setLocation(item.getLocation());
+            existingItem.setCostPrice(item.getCostPrice());
+            existingItem.setSellingPrice(item.getSellingPrice());
+            existingItem.setLastUpdatedDate(setTodayDateTime());
+            existingItem.setAttribute(item.getAttribute());
+            existingItem.setStatus();
+
+            repository.save(existingItem);
+
+            return new ResponseEntity<>("Item updated", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
