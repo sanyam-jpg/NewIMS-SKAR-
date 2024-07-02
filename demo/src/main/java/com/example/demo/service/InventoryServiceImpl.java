@@ -57,7 +57,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
 
-   //UPDATE//
+   //UPDATE//adding to change last commit message
     @Override
     public ResponseEntity<String> updateInventory(Long id, Item item) {
         Optional<Item> existingItemOptional = repository.findById(id);
