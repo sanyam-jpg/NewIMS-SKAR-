@@ -5,10 +5,7 @@ import com.example.demo.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Component
 @RestController("/inventories")
@@ -31,5 +28,10 @@ public class InventoryController {
 
         return inventoryService.createInventory(item);
 
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateInventory(@PathVariable Long id, @RequestBody Item item) {
+        return inventoryService.updateInventory(id, item);
     }
 }
