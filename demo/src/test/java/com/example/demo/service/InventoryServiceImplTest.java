@@ -8,13 +8,13 @@ import static org.junit.Assert.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CreateCreateInventoryServiceImplTest {
+public class InventoryServiceImplTest {
 
-    CreateCreateInventoryServiceImpl inventoryService;
+    InventoryServiceImpl inventoryService;
 
     @Before()
     public void setup(){
-        inventoryService = new CreateCreateInventoryServiceImpl();
+        inventoryService = new InventoryServiceImpl();
     }
     @Test
     public void validType_mobile() {
