@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Component
 @RestController("/inventories")
 public class InventoryController {
@@ -23,21 +21,29 @@ public class InventoryController {
 
 
     @GetMapping("/getAll")
-    public String getItems(){
+    public ResponseEntity<String> getItems(){
         return inventoryService.getAllInventory();
     }
 
     @GetMapping("/getById/{id}")
-    public String getInventory(@PathVariable Long id){
+    public ResponseEntity<String> getInventory(@PathVariable Long id){
         return inventoryService.getInventoryById(id);
     }
 
     @GetMapping("/{pageNum}")
-    public String getInventoryByPage(@PathVariable int pageNum) {
-        Pageable pageable = PageRequest.of(pageNum, Constants.itemOnEachPage);
-        Page<Item> page = inventoryService.getInventoryByPage(pageable);
-        List<Item> list = page.getContent();
-        return list.toString();
+    public ResponseEntity<Page<Item>> getInventoryByPage(@PathVariable int pageNum) {
+        try {
+            Pageable pageable = PageRequest.of(pageNum, Constants.itemOnEachPage);
+            Page<Item> page = inventoryService.getInventoryByPage(pageable);
+
+            if (page.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(page);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @PostMapping("/create")

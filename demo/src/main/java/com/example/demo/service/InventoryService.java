@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface InventoryService {
 
-    ResponseEntity<String> createInventory(Item item);
-    public String getAllInventory();
-    public String getInventoryById(Long id);
-    Page<Item> getInventoryByPage(Pageable pageable);
+    public ResponseEntity<String> createInventory(Item item);
+    public ResponseEntity<String> getAllInventory();
+    public ResponseEntity<String> getInventoryById(Long id);
+    public Page<Item> getInventoryByPage(Pageable pageable);
 
 }
