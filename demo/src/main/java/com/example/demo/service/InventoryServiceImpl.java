@@ -54,7 +54,7 @@ public class InventoryServiceImpl implements InventoryService {
     //GET//
 
     @Override
-    public ResponseEntity<String> getAllInventory(){
+    public ResponseEntity<String> getAll(){
         try{
             List<Item> inventory =  repository.findAll();
             String jsonResponse = objectMapper.writeValueAsString(inventory);
@@ -67,7 +67,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
-    public ResponseEntity<String> getInventoryById(Long id){
+    public ResponseEntity<String> get(Long id){
         Optional<Item> item = repository.findById(id);
         try{
             if (item.isPresent()) {
@@ -84,7 +84,7 @@ public class InventoryServiceImpl implements InventoryService {
 
 
     @Override
-    public Page<Item> getInventoryByPage(Pageable pageable) {
+    public Page<Item> getPage(Pageable pageable) {
         try {
             return repository.findAll(pageable);
         } catch (Exception e) {

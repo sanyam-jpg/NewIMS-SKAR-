@@ -20,21 +20,21 @@ public class InventoryController {
 
 
 
-    @GetMapping("/getAll")
-    public ResponseEntity<String> getItems(){
-        return inventoryService.getAllInventory();
+    @GetMapping("/")
+    public ResponseEntity<String> getAll(){
+        return inventoryService.getAll();
     }
 
-    @GetMapping("/getById/{id}")
-    public ResponseEntity<String> getInventory(@PathVariable Long id){
-        return inventoryService.getInventoryById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getById(@PathVariable Long id){
+        return inventoryService.get(id);
     }
 
     @GetMapping("/{pageNum}")
-    public ResponseEntity<Page<Item>> getInventoryByPage(@PathVariable int pageNum) {
+    public ResponseEntity<Page<Item>> getByPage(@PathVariable int pageNum) {
         try {
             Pageable pageable = PageRequest.of(pageNum, Constants.itemOnEachPage);
-            Page<Item> page = inventoryService.getInventoryByPage(pageable);
+            Page<Item> page = inventoryService.getPage(pageable);
 
             if (page.isEmpty()) {
                 return ResponseEntity.notFound().build();
