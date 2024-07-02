@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.model.Item;
 import com.example.demo.repository.InventoryRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import configration.ItemType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -90,7 +92,64 @@ public class InventoryServiceImpl implements InventoryService {
             return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
         }
     }
+    @Override
+    public ResponseEntity<String> updateStatus(Long id, String status) {
+        Optional<Item> existingItemOptional = repository.findById(id);
 
+        if (existingItemOptional.isPresent()) {
+            Item existingItem = existingItemOptional.get();
+            existingItem.setStatus(status);
+            existingItem.setLastUpdatedDate(setTodayDateTime());
+
+            repository.save(existingItem);
+
+            return new ResponseEntity<>("Status updated", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> updatePricing(Long id, long costPrice, long sellingPrice) {
+        Optional<Item> existingItemOptional = repository.findById(id);
+
+        if (existingItemOptional.isPresent()) {
+            Item existingItem = existingItemOptional.get();
+            existingItem.setCostPrice(costPrice);
+            existingItem.setSellingPrice(sellingPrice);
+            existingItem.setLastUpdatedDate(setTodayDateTime());
+
+            repository.save(existingItem);
+
+            return new ResponseEntity<>("Pricing updated", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<String> updateAttribute(Long id, String attribute) {
+        Optional<Item> existingItemOptional = repository.findById(id);
+
+        if (existingItemOptional.isPresent()) {
+            Item existingItem = existingItemOptional.get();
+
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(attribute);
+                existingItem.setAttribute(jsonNode);
+                existingItem.setLastUpdatedDate(setTodayDateTime());
+
+                repository.save(existingItem);
+
+                return new ResponseEntity<>("Attribute updated", HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     // HELPER FUNCTION///

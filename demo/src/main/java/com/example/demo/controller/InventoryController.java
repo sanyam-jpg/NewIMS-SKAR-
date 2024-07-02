@@ -34,4 +34,20 @@ public class InventoryController {
     public ResponseEntity<String> updateInventory(@PathVariable Long id, @RequestBody Item item) {
         return inventoryService.updateInventory(id, item);
     }
+
+    @PutMapping("/updateStatus/{id}")
+    public ResponseEntity<String> updateStatus(@PathVariable Long id, @RequestParam String status) {
+        return inventoryService.updateStatus(id, status);
+    }
+
+    @PutMapping("/updatePricing/{id}")
+    public ResponseEntity<String> updatePricing(@PathVariable Long id, @RequestParam long costPrice, @RequestParam long sellingPrice) {
+        return inventoryService.updatePricing(id, costPrice, sellingPrice);
+    }
+
+    @PutMapping("/updateAttribute/{id}")
+    public ResponseEntity<String> updateAttribute(@PathVariable Long id, @RequestBody String attribute) {
+        return inventoryService.updateAttribute(id, attribute);
+    }
+
 }
