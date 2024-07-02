@@ -4,6 +4,8 @@ import com.example.demo.model.Item;
 import com.example.demo.repository.InventoryRepository;
 import configration.ItemType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -51,11 +53,6 @@ public class InventoryServiceImpl implements InventoryService {
         return repository.findAll().toString();
     }
 
-    @Override
-    public String getInventory(Long id){
-        return "";
-    }
-
 
     @Override
     public String getInventoryById(Long id){
@@ -65,6 +62,12 @@ public class InventoryServiceImpl implements InventoryService {
         } else {
             return "Inventory not found";
         }
+    }
+
+
+    @Override
+    public Page<Item> getInventoryByPage(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
 
