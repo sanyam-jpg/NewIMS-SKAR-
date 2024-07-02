@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -40,7 +42,11 @@ public class InventoryServiceImpl implements InventoryService {
 
         repository.save(item);
 
-        return new ResponseEntity<>(Long.toString(item.getId()), HttpStatus.OK);
+        Map<String,Long> response = new HashMap<>();
+        response.put("id",item.getId());
+
+
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
 
     //TODO : validate attribute can hold only json
