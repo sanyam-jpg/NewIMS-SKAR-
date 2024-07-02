@@ -57,8 +57,6 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
 
-    /// GET BY ID /////
-
     @Override
     public String getInventoryById(Long id){
         Optional<Item> item = repository.findById(id);

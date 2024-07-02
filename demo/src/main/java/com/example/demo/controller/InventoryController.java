@@ -22,7 +22,7 @@ public class InventoryController {
     }
 
     @GetMapping("/getById/{id}")
-    public String getInventory(@RequestParam Long id){
+    public String getInventory(@PathVariable Long id){
         return inventoryService.getInventoryById(id);
     }
 
