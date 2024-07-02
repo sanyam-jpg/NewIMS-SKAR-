@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -56,6 +57,17 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
 
+    /// GET BY ID /////
+
+    @Override
+    public String getInventoryById(Long id){
+        Optional<Item> item = repository.findById(id);
+        if (item.isPresent()) {
+            return item.get().toString();
+        } else {
+            return "Inventory not found";
+        }
+    }
 
 
     // HELPER FUNCTION///

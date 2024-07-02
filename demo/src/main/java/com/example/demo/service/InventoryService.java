@@ -9,7 +9,7 @@ public interface InventoryService {
 
     ResponseEntity<String> createInventory(Item item);
     public String getAllInventory();
-    public String getInventory(Long id);
+    public String getInventoryById(Long id);
 
 
 

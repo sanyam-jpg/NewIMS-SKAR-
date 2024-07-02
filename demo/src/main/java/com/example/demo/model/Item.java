@@ -5,11 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import configration.ItemStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Data
 @Entity
 public class Item {
+
+    @Getter
+    @Setter
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
