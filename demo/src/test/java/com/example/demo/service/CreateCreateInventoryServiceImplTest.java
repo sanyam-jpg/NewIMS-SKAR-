@@ -3,20 +3,18 @@ package com.example.demo.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InventoryServiceImplTest {
+public class CreateCreateInventoryServiceImplTest {
 
-    InventoryServiceImpl inventoryService;
+    CreateCreateInventoryServiceImpl inventoryService;
 
     @Before()
     public void setup(){
-        inventoryService = new InventoryServiceImpl();
+        inventoryService = new CreateCreateInventoryServiceImpl();
     }
     @Test
     public void validType_mobile() {

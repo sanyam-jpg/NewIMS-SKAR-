@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Item;
-import com.example.demo.service.InventoryService;
+import com.example.demo.service.CreateInventoryService;
+import com.example.demo.service.GetInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -15,19 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class InventoryController {
 
     @Autowired
-    private InventoryService inventoryService;
+    private CreateInventoryService createInventoryService;
+
+    @Autowired
+    private GetInventoryService getInventoryService;
 
 
-    @GetMapping("/")
+
+
+    @GetMapping("/getAll")
     public String getItems(){
-        return inventoryService.getAllInventory();
+        return getInventoryService.getAllInventory();
     }
 
 
 
     @PostMapping("/create")
     public ResponseEntity<String> createInventory(@RequestBody Item item){
-//        System.out.println(item.getLocation());
-        return inventoryService.createInventory(item);
+
+        return createInventoryService.createInventory(item);
+
     }
 }

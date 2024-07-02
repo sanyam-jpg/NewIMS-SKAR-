@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class InventoryServiceImpl implements InventoryService {
+public class CreateCreateInventoryServiceImpl implements CreateInventoryService {
 
     @Autowired
     private InventoryRepository repository;
@@ -37,15 +37,13 @@ public class InventoryServiceImpl implements InventoryService {
         return new ResponseEntity<>(Long.toString(item.getId()), HttpStatus.OK);
     }
 
-    @Override
-    public String getAllInventory(){
-        return repository.findAll().toString();
-    }
+    //TODO : validate attribute can hold only json
+
+
 
 
 
     // helper functions
-
 
     boolean validType(String type){
         if(type==null || type.isEmpty()){
@@ -58,7 +56,6 @@ public class InventoryServiceImpl implements InventoryService {
 
         return false;
     }
-
 
     String setTodayDateTime(){
         return LocalDateTime.now().toString();
