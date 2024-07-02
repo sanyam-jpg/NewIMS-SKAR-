@@ -21,9 +21,6 @@ public class InventoryController {
     @Autowired
     private GetInventoryService getInventoryService;
 
-
-
-
     @GetMapping("/getAll")
     public String getItems(){
         return getInventoryService.getAllInventory();

@@ -29,6 +29,8 @@ public class Item {
 
     @Column private String attribute;
 
+    @Column private String status;
+
 
 
     public void setAttribute(JsonNode attribute) {
