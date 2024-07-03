@@ -47,11 +47,13 @@ public class InventoryController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<String> createInventory(@RequestBody Item item){
+    private ResponseEntity<String> createInventory(@RequestBody Item item){
 
         return inventoryService.create(item);
 
     }
+
+    //TODO Make ALL These Patch Mapping
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateInventory(@PathVariable Long id, @RequestBody Item item) {
@@ -63,8 +65,9 @@ public class InventoryController {
         return inventoryService.updateStatus(id, status);
     }
 
+    //TODO maybe we only recive one request param thats why required = false, make nexessary changes in service
     @PutMapping("/updatePricing/{id}")
-    public ResponseEntity<String> updatePricing(@PathVariable Long id, @RequestParam long costPrice, @RequestParam long sellingPrice) {
+    public ResponseEntity<String> updatePricing(@PathVariable Long id, @RequestParam(required = false) long costPrice, @RequestParam(required = false) long sellingPrice) {
         return inventoryService.updatePricing(id, costPrice, sellingPrice);
     }
 
