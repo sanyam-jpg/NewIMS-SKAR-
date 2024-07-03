@@ -2,10 +2,16 @@ package com.skar.InventoryManagement.controller;
 
 import com.skar.InventoryManagement.model.Item;
 import com.skar.InventoryManagement.service.InventoryService;
+import configration.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+
+
 
 @Component
 @RestController("/inventories")
@@ -16,10 +22,36 @@ public class InventoryController {
 
 
 
-    @GetMapping("/getAll")
-    public String getItems(){
-        return inventoryService.getAllInventory();
+    @GetMapping("/")
+    public ResponseEntity<String> getAll(){
+        return inventoryService.getAll();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getById(@PathVariable Long id){
+        return inventoryService.get(id);
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity<Page<Item>> getByPage(@RequestParam(required = false) int pageNum) {
+        try {
+            Pageable pageable = PageRequest.of(pageNum, Constants.itemOnEachPage);
+            Page<Item> page = inventoryService.getPage(pageable);
+
+            if (page.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(page);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
+
+
+
 
 
 
