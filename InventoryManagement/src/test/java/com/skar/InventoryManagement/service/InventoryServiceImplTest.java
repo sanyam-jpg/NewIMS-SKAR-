@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.skar.InventoryManagement.service;
 
 
 import org.junit.Before;

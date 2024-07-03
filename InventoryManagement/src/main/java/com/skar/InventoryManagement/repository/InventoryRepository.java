@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.skar.InventoryManagement.repository;
 
-import com.example.demo.model.Item;
+import com.skar.InventoryManagement.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

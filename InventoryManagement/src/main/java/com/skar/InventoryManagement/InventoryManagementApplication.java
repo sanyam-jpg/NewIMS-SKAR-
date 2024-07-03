@@ -1,13 +1,13 @@
-package com.example.demo;
+package com.skar.InventoryManagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class InventoryManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(InventoryManagementApplication.class, args);
 	}
 
 }

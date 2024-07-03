@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.skar.InventoryManagement.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.skar.InventoryManagement.controller;
 
-import com.example.demo.model.Item;
-import com.example.demo.service.InventoryService;
+import com.skar.InventoryManagement.model.Item;
+import com.skar.InventoryManagement.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

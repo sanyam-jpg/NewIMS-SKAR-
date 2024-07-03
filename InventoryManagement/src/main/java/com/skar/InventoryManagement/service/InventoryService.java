@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.skar.InventoryManagement.service;
 
-import com.example.demo.model.Item;
+import com.skar.InventoryManagement.model.Item;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

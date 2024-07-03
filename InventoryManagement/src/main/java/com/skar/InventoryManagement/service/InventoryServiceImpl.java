@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package com.skar.InventoryManagement.service;
 
-import com.example.demo.model.Item;
-import com.example.demo.repository.InventoryRepository;
+import com.skar.InventoryManagement.model.Item;
+import com.skar.InventoryManagement.repository.InventoryRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import configration.ItemType;
