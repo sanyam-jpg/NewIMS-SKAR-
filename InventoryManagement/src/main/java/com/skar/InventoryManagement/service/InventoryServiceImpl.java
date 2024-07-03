@@ -121,6 +121,11 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseEntity<String> updateStatus(Long id, String status) {
+        if(!"BOOKED".equals(status) && !"SOLD".equals(status)){
+            return new ResponseEntity<>("Invalid status.Status can only be updated to BOOKED or SOLD.", HttpStatus.BAD_REQUEST);
+        }
+
+
         Optional<Item> existingItemOptional = repository.findById(id);
 
         if (existingItemOptional.isEmpty()) {
@@ -144,9 +149,14 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public ResponseEntity<String> updatePricing(Long id, long costPrice, long sellingPrice) {
+        if(costPrice <= 0 && sellingPrice <= 0){
+            return new ResponseEntity<>("costPrice and sellingPrice must be greater than 0", HttpStatus.BAD_REQUEST);
+        }
+
+
         Optional<Item> existingItemOptional = repository.findById(id);
 
-        if (existingItemOptional.isPresent()) {
+         if (existingItemOptional.isPresent()) {
             Item existingItem = existingItemOptional.get();
             existingItem.setCostPrice(costPrice);
             existingItem.setSellingPrice(sellingPrice);
@@ -155,7 +165,8 @@ public class InventoryServiceImpl implements InventoryService {
             repository.save(existingItem);
 
             return new ResponseEntity<>("Pricing updated", HttpStatus.OK);
-        } else {
+        }
+         else {
             return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
         }
     }
