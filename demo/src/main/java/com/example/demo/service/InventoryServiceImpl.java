@@ -27,14 +27,8 @@ public class InventoryServiceImpl implements InventoryService {
     public ResponseEntity<String> createInventory(Item item){
 
 
-        if(!validType(item.getType())){
-            String response = item.getType() + " is not a valid type of item";
-            return new ResponseEntity<>(response,HttpStatus.FORBIDDEN);
-        }
-
-        if(!item.getLocation().matches("[a-zA-Z]+")){
-            return new ResponseEntity<>("Invalid Location",HttpStatus.BAD_REQUEST);
-        }
+        ResponseEntity<String> response1 = getResponseEntity(item);
+        if (response1 != null) return response1;
 
         item.setCreationDate(setTodayDateTime());
         item.setLastUpdatedDate(setTodayDateTime());
@@ -73,14 +67,8 @@ public class InventoryServiceImpl implements InventoryService {
         if (existingItemOptional.isPresent()) {
             Item existingItem = existingItemOptional.get();
 
-            if (!validType(item.getType())) {
-                String response = item.getType() + " is not a valid type of item";
-                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-            }
-
-            if (!item.getLocation().matches("[a-zA-Z]+")) {
-                return new ResponseEntity<>("Invalid Location", HttpStatus.BAD_REQUEST);
-            }
+            ResponseEntity<String> response = getResponseEntity(item);
+            if (response != null) return response;
 
 
             existingItem.setType(item.getType());
@@ -98,6 +86,8 @@ public class InventoryServiceImpl implements InventoryService {
             return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
         }
     }
+
+
     @Override
     public ResponseEntity<String> updateStatus(Long id, String status) {
         Optional<Item> existingItemOptional = repository.findById(id);
@@ -170,6 +160,18 @@ public class InventoryServiceImpl implements InventoryService {
         }
 
         return false;
+    }
+
+    private ResponseEntity<String> getResponseEntity(Item item) {
+        if (!validType(item.getType())) {
+            String response = item.getType() + " is not a valid type of item";
+            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        }
+
+        if (!item.getLocation().matches("[a-zA-Z]+")) {
+            return new ResponseEntity<>("Invalid Location", HttpStatus.BAD_REQUEST);
+        }
+        return null;
     }
 
     String setTodayDateTime(){
