@@ -30,7 +30,7 @@ public class InventoryController {
         return inventoryService.get(id);
     }
 
-    @GetMapping("/{pageNum}")
+    @GetMapping("/items/{pageNum}")
     public ResponseEntity<Page<Item>> getByPage(@PathVariable int pageNum) {
         try {
             Pageable pageable = PageRequest.of(pageNum, Constants.itemOnEachPage);
