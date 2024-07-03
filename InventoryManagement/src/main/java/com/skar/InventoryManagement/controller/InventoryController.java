@@ -8,18 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 
-
-@Component
-@RestController("/inventories")
+@RestController()
+@RequestMapping("/inventories")
 public class InventoryController {
 
     @Autowired
     private InventoryService inventoryService;
-
 
 
     @GetMapping("/")
@@ -49,16 +46,10 @@ public class InventoryController {
     }
 
 
-
-
-
-
-
-
     @PostMapping("/create")
     public ResponseEntity<String> createInventory(@RequestBody Item item){
 
-        return inventoryService.createInventory(item);
+        return inventoryService.create(item);
 
     }
 

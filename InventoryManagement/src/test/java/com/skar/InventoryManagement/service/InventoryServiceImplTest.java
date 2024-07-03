@@ -1,8 +1,10 @@
 package com.skar.InventoryManagement.service;
 
 
+import com.skar.InventoryManagement.model.Item;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
 
@@ -73,6 +75,7 @@ public class InventoryServiceImplTest {
 
     @Test
     public void invalid_type_arbitarary() {
+        Item item = new Item();
 
         String type = "xyz_123";
 

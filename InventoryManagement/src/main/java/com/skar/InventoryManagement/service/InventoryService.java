@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface InventoryService {
 
-    public ResponseEntity<String> createInventory(Item item);
+    public ResponseEntity<String> create(Item item);
 
     public ResponseEntity<String> updateInventory(Long id, Item item);
 

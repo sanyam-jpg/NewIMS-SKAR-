@@ -29,30 +29,29 @@ public class InventoryServiceImpl implements InventoryService {
 
     //// CREATE///////
     @Override
-    public ResponseEntity<String> createInventory(Item item){
+    public ResponseEntity<String> create(Item item){
 
-
-        ResponseEntity<String> response1 = getResponseEntity(item);
-        if (response1 != null) return response1;
+        //null response indicate that item passed validation checks else we get the error response to send back
+        ResponseEntity<String> checkValidity = getResponseEntity(item);
+        if (checkValidity != null) return checkValidity;
 
         item.setCreationDate(setTodayDateTime());
         item.setLastUpdatedDate(setTodayDateTime());
         item.setStatus();
 
-        repository.save(item);
+        try{
+            repository.save(item);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
 
-        Map<String,Long> response = new HashMap<>();
-        response.put("id",item.getId());
+        String response = "{id: " + item.getId() + ",status: " +200L + "}";
 
-
-        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    //TODO : validate attribute can hold only json
 
 
     //GET//
-
 
     @Override
     public ResponseEntity<String> getAll(){
@@ -62,10 +61,9 @@ public class InventoryServiceImpl implements InventoryService {
             return ResponseEntity.ok(jsonResponse);
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
-
 
     @Override
     public ResponseEntity<String> get(Long id){
@@ -83,7 +81,6 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
-
     @Override
     public Page<Item> getPage(Pageable pageable) {
         try {
@@ -97,6 +94,7 @@ public class InventoryServiceImpl implements InventoryService {
    //UPDATE//
     @Override
     public ResponseEntity<String> updateInventory(Long id, Item item) {
+        //TODO put validation checks
         Optional<Item> existingItemOptional = repository.findById(id);
 
         if (existingItemOptional.isPresent()) {
@@ -104,7 +102,6 @@ public class InventoryServiceImpl implements InventoryService {
 
             ResponseEntity<String> response = getResponseEntity(item);
             if (response != null) return response;
-
 
             existingItem.setType(item.getType());
             existingItem.setLocation(item.getLocation());
@@ -122,22 +119,27 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
-
     @Override
     public ResponseEntity<String> updateStatus(Long id, String status) {
         Optional<Item> existingItemOptional = repository.findById(id);
 
-        if (existingItemOptional.isPresent()) {
-            Item existingItem = existingItemOptional.get();
-            existingItem.setStatus(status);
-            existingItem.setLastUpdatedDate(setTodayDateTime());
-
-            repository.save(existingItem);
-
-            return new ResponseEntity<>("Status updated", HttpStatus.OK);
-        } else {
+        if (existingItemOptional.isEmpty()) {
             return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
         }
+
+        Item existingItem = existingItemOptional.get();
+        existingItem.setStatus(status);
+        existingItem.setLastUpdatedDate(setTodayDateTime());
+
+        try{
+            repository.save(existingItem);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+
+        return new ResponseEntity<>("Status updated", HttpStatus.OK);
+
     }
 
     @Override
@@ -182,7 +184,6 @@ public class InventoryServiceImpl implements InventoryService {
         }
     }
 
-
     // HELPER FUNCTION///
 
     boolean validType(String type){
@@ -206,10 +207,20 @@ public class InventoryServiceImpl implements InventoryService {
         if (!item.getLocation().matches("[a-zA-Z]+")) {
             return new ResponseEntity<>("Invalid Location", HttpStatus.BAD_REQUEST);
         }
+
+        if(item.getCostPrice()<=0 || item.getSellingPrice()<=0){
+            return new ResponseEntity<>("Invalid Cost Price", HttpStatus.BAD_REQUEST);
+        }
+
+        if(item.getAttribute().toString().equals("")){
+            return new ResponseEntity<>("Invalid Attribute", HttpStatus.BAD_REQUEST);
+        }
+
         return null;
     }
 
     String setTodayDateTime(){
+
         return LocalDateTime.now().toString();
     }
 
