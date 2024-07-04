@@ -15,7 +15,7 @@ public interface InventoryService {
 
     public ResponseEntity<String> updateStatus(Long id, String status);
 
-    public ResponseEntity<String> updatePricing(Long id, long costPrice, long sellingPrice);
+    public ResponseEntity<String> updatePricing(Long id, Long costPrice, Long sellingPrice);
 
     public ResponseEntity<String> updateAttribute(Long id, String attribute);
 

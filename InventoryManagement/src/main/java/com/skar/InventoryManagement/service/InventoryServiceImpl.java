@@ -72,7 +72,8 @@ public class InventoryServiceImpl implements InventoryService {
             if (item.isPresent()) {
                 String jsonResponse = objectMapper.writeValueAsString(item.get());
                 return ResponseEntity.ok(jsonResponse);
-            } else {
+            }
+            else {
                 return ResponseEntity.status(404).body("Inventory not found");
             }
         }
@@ -95,6 +96,23 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public ResponseEntity<String> updateInventory(Long id, Item item) {
         //TODO put validation checks
+
+        if (id == null || id <= 0) {
+            return new ResponseEntity<>("Invalid ID. ID must be greater than 0.", HttpStatus.BAD_REQUEST);
+        }
+
+        JsonNode jsonNode = null;
+        if (item.getAttribute() != null) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                jsonNode = objectMapper.readTree(item.getAttribute().toString());
+            } catch (Exception e) {
+                return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
+            }
+        }
+
+
+
         Optional<Item> existingItemOptional = repository.findById(id);
 
         if (existingItemOptional.isPresent()) {
@@ -114,7 +132,8 @@ public class InventoryServiceImpl implements InventoryService {
             repository.save(existingItem);
 
             return new ResponseEntity<>("Item updated", HttpStatus.OK);
-        } else {
+        }
+        else {
             return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
         }
     }
@@ -148,29 +167,29 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public ResponseEntity<String> updatePricing(Long id, long costPrice, long sellingPrice) {
+    public ResponseEntity<String> updatePricing(Long id, Long costPrice, Long sellingPrice) {
 
-        if(costPrice <= 0 && sellingPrice <=0){
+        if((costPrice != null && costPrice <= 1) || (sellingPrice != null && sellingPrice <= 1)){
             return new ResponseEntity<>("costPrice and sellingPrice must be greater than 0", HttpStatus.BAD_REQUEST);
         }
 
 
         Optional<Item> existingItemOptional = repository.findById(id);
 
-         //TODO FLIP THE IF STATMENTS
-         if (existingItemOptional.isPresent()) {
-            Item existingItem = existingItemOptional.get();
-            existingItem.setCostPrice(costPrice);
-            existingItem.setSellingPrice(sellingPrice);
-            existingItem.setLastUpdatedDate(setTodayDateTime());
 
-            repository.save(existingItem);
+        if (existingItemOptional.isEmpty()) {
+           return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        }
+        else {
+          Item existingItem = existingItemOptional.get();
+          if (costPrice != null)existingItem.setCostPrice(costPrice);
+          if (sellingPrice != null)existingItem.setSellingPrice(sellingPrice);
+          existingItem.setLastUpdatedDate(setTodayDateTime());
 
-            return new ResponseEntity<>("Pricing updated", HttpStatus.OK);
-        }
-         else {
-            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
-        }
+          repository.save(existingItem);
+
+          return new ResponseEntity<>("Pricing updated", HttpStatus.OK);
+      }
     }
 
     @Override
@@ -227,6 +246,9 @@ public class InventoryServiceImpl implements InventoryService {
 
         if(item.getAttribute().toString().equals("")){
             return new ResponseEntity<>("Invalid Attribute", HttpStatus.BAD_REQUEST);
+        }
+        if(!"BOOKED".equalsIgnoreCase(item.getStatus()) && !"SOLD".equalsIgnoreCase(item.getStatus())){
+            return new ResponseEntity<>("Invalid status.Status can only be updated to BOOKED or SOLD.", HttpStatus.BAD_REQUEST);
         }
 
         return null;

@@ -23,9 +23,9 @@ public class Item {
 
     @Column private String Type;
 
-    @Column private long costPrice;
+    @Column private Long costPrice;
 
-    @Column private long sellingPrice;
+    @Column private Long sellingPrice;
 
     @Column private String creationDate;
 
