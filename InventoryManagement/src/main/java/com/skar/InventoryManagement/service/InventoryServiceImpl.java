@@ -96,13 +96,9 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public ResponseEntity<String> updateInventory(Long id, Item item) {
 
-
         if (id == null || id <= 0) {
             return new ResponseEntity<>("Invalid ID. ID must be greater than 0.", HttpStatus.BAD_REQUEST);
         }
-
-
-
 
         Optional<Item> existingItemOptional = repository.findById(id);
 
@@ -122,16 +118,7 @@ public class InventoryServiceImpl implements InventoryService {
 
             existingItem.setLastUpdatedDate(setTodayDateTime());
 
-            JsonNode jsonNode = null;
-            if (item.getAttribute() != null) {
-                try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    jsonNode = objectMapper.readTree(item.getAttribute().toString());
-                } catch (Exception e) {
-                    return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
-                }
-            }
-            if(jsonNode != null)existingItem.setAttribute(item.getAttribute());
+            existingItem.setAttribute(item.getAttribute());
 
             existingItem.setStatus();
 
@@ -249,8 +236,16 @@ public class InventoryServiceImpl implements InventoryService {
         if(item.getCostPrice()<=0 || item.getSellingPrice()<=0){
             return new ResponseEntity<>("Invalid Cost Price", HttpStatus.BAD_REQUEST);
         }
-
-        if(item.getAttribute().toString().isEmpty()){
+        JsonNode jsonNode = null;
+        if (item.getAttribute() != null) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                jsonNode = objectMapper.readTree(item.getAttribute().toString());
+            } catch (Exception e) {
+                return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
+            }
+        }
+        if(jsonNode == null){
             return new ResponseEntity<>("Invalid Attribute", HttpStatus.BAD_REQUEST);
         }
         if(!"CREATED".equalsIgnoreCase(item.getStatus()) && !"BOOKED".equalsIgnoreCase(item.getStatus()) && !"SOLD".equalsIgnoreCase(item.getStatus())){
