@@ -95,21 +95,12 @@ public class InventoryServiceImpl implements InventoryService {
    //UPDATE//
     @Override
     public ResponseEntity<String> updateInventory(Long id, Item item) {
-        //TODO put validation checks
+
 
         if (id == null || id <= 0) {
             return new ResponseEntity<>("Invalid ID. ID must be greater than 0.", HttpStatus.BAD_REQUEST);
         }
 
-        JsonNode jsonNode = null;
-        if (item.getAttribute() != null) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                jsonNode = objectMapper.readTree(item.getAttribute().toString());
-            } catch (Exception e) {
-                return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
-            }
-        }
 
 
 
@@ -122,11 +113,26 @@ public class InventoryServiceImpl implements InventoryService {
             if (response != null) return response;
 
             existingItem.setType(item.getType());
+
             existingItem.setLocation(item.getLocation());
+
             existingItem.setCostPrice(item.getCostPrice());
+
             existingItem.setSellingPrice(item.getSellingPrice());
+
             existingItem.setLastUpdatedDate(setTodayDateTime());
-            existingItem.setAttribute(item.getAttribute());
+
+            JsonNode jsonNode = null;
+            if (item.getAttribute() != null) {
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    jsonNode = objectMapper.readTree(item.getAttribute().toString());
+                } catch (Exception e) {
+                    return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
+                }
+            }
+            if(jsonNode != null)existingItem.setAttribute(item.getAttribute());
+
             existingItem.setStatus();
 
             repository.save(existingItem);
@@ -244,10 +250,10 @@ public class InventoryServiceImpl implements InventoryService {
             return new ResponseEntity<>("Invalid Cost Price", HttpStatus.BAD_REQUEST);
         }
 
-        if(item.getAttribute().toString().equals("")){
+        if(item.getAttribute().toString().isEmpty()){
             return new ResponseEntity<>("Invalid Attribute", HttpStatus.BAD_REQUEST);
         }
-        if(!"BOOKED".equalsIgnoreCase(item.getStatus()) && !"SOLD".equalsIgnoreCase(item.getStatus())){
+        if(!"CREATED".equalsIgnoreCase(item.getStatus()) && !"BOOKED".equalsIgnoreCase(item.getStatus()) && !"SOLD".equalsIgnoreCase(item.getStatus())){
             return new ResponseEntity<>("Invalid status.Status can only be updated to BOOKED or SOLD.", HttpStatus.BAD_REQUEST);
         }
 
