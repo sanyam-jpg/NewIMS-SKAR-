@@ -55,25 +55,25 @@ public class InventoryController {
 
     }
 
-    //TODO Make ALL These Patch Mapping
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateInventory(@PathVariable Long id, @RequestBody Item item) {
         return inventoryService.updateInventory(id, item);
     }
 
-    @PutMapping("/updateStatus/{id}")
+    @PatchMapping("/updateStatus/{id}")
     public ResponseEntity<String> updateStatus(@PathVariable Long id, @RequestParam String status) {
         return inventoryService.updateStatus(id, status);
     }
 
 
-    @PutMapping("/updatePricing/{id}")
+    @PatchMapping("/updatePricing/{id}")
     public ResponseEntity<String> updatePricing(@PathVariable Long id, @RequestParam(required = false) long costPrice, @RequestParam(required = false) long sellingPrice) {
         return inventoryService.updatePricing(id, costPrice, sellingPrice);
     }
 
-    @PutMapping("/updateAttribute/{id}")
+    @PatchMapping("/updateAttribute/{id}")
     public ResponseEntity<String> updateAttribute(@PathVariable Long id, @RequestBody String attribute) {
         return inventoryService.updateAttribute(id, attribute);
     }
