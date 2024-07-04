@@ -259,6 +259,19 @@ public class InventoryServiceImpl implements InventoryService {
         return LocalDateTime.now().toString();
     }
 
+    @Override
+    public ResponseEntity<String> delete(Long id) {
+        Optional<Item> itemOptional = repository.findById(id);
+        if (itemOptional.isPresent()) {
+            repository.deleteById(id);
+            return ResponseEntity.ok("Item deleted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 
 
 }

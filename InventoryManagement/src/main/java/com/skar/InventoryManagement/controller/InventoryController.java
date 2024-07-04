@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController()
 @RequestMapping("/inventories")
@@ -75,5 +77,14 @@ public class InventoryController {
     public ResponseEntity<String> updateAttribute(@PathVariable Long id, @RequestBody String attribute) {
         return inventoryService.updateAttribute(id, attribute);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteInventory(@PathVariable Long id){
+        return inventoryService.delete(id);
+
+    }
+
+
+
 
 }

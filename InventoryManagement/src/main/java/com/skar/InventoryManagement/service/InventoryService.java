@@ -23,4 +23,6 @@ public interface InventoryService {
     public ResponseEntity<String> getAll();
     public ResponseEntity<String> get(Long id);
     public Page<Item> getPage(Pageable pageable);
+    public ResponseEntity<String> delete(Long id);
+
 }
