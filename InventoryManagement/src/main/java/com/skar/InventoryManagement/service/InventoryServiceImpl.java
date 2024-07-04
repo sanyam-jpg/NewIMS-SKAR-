@@ -98,7 +98,7 @@ public class InventoryServiceImpl implements InventoryService {
         //TODO put validation checks
 
         if (id == null || id <= 0) {
-            return new ResponseEntity<>("Invalid ID. ID must be greater than 0.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Invalid ID.", HttpStatus.BAD_REQUEST);
         }
 
         JsonNode jsonNode = null;
@@ -110,8 +110,6 @@ public class InventoryServiceImpl implements InventoryService {
                 return new ResponseEntity<>("Invalid attribute JSON", HttpStatus.BAD_REQUEST);
             }
         }
-
-
 
         Optional<Item> existingItemOptional = repository.findById(id);
 
@@ -143,7 +141,6 @@ public class InventoryServiceImpl implements InventoryService {
         if(!"BOOKED".equalsIgnoreCase(status) && !"SOLD".equalsIgnoreCase(status)){
             return new ResponseEntity<>("Invalid status.Status can only be updated to BOOKED or SOLD.", HttpStatus.BAD_REQUEST);
         }
-
 
         Optional<Item> existingItemOptional = repository.findById(id);
 
@@ -180,16 +177,16 @@ public class InventoryServiceImpl implements InventoryService {
         if (existingItemOptional.isEmpty()) {
            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
         }
-        else {
-          Item existingItem = existingItemOptional.get();
-          if (costPrice != null)existingItem.setCostPrice(costPrice);
-          if (sellingPrice != null)existingItem.setSellingPrice(sellingPrice);
-          existingItem.setLastUpdatedDate(setTodayDateTime());
 
-          repository.save(existingItem);
+        Item existingItem = existingItemOptional.get();
+        if (costPrice != null)existingItem.setCostPrice(costPrice);
+        if (sellingPrice != null)existingItem.setSellingPrice(sellingPrice);
+        existingItem.setLastUpdatedDate(setTodayDateTime());
 
-          return new ResponseEntity<>("Pricing updated", HttpStatus.OK);
-      }
+        repository.save(existingItem);
+
+        return new ResponseEntity<>("Pricing updated", HttpStatus.OK);
+
     }
 
     @Override
